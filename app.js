@@ -35,8 +35,55 @@ const spotifyApi = new SpotifyApiNode({
 
 app.use(express.static("public"))
 
-app.get("/", (req, res) => {
-    res.sendFile("views/index.html", { root: __dirname })
+express.response.renderHTML = function (file) {
+    this.sendFile(file, { root: __dirname })
+}
+
+async function loggedIn() {
+    try {
+        await spotifyApi.getMe()
+    } catch {
+        return false
+    }
+    return true
+}
+
+app.get("/", async (req, res) => {
+    await loggedIn() ? res.renderHTML("views/index.html") : res.redirect("/login")
+})
+
+app.get("/login", (req, res) => {
+    res.renderHTML("views/login.html")
+})
+
+app.get("/login/redirect", (req, res) => {
+    res.redirect(spotifyApi.createAuthorizeURL(scopes, "some status"))
+})
+
+app.get("/callback", async (req, res) => {
+    const error = req.query.error
+    const code = req.query.code
+
+    if (error) {
+        console.error("Callback Error:", error)
+        res.send(`Callback Error: ${error}`)
+        return
+    }
+    if (!code) return console.log("No code in callback")
+
+    let data = await spotifyApi.authorizationCodeGrant(code.toString())
+
+    spotifyApi.setAccessToken(data.body.access_token)
+    spotifyApi.setRefreshToken(data.body.refresh_token)
+
+    res.redirect("/")
+
+    setInterval(async () => {
+        const data = await spotifyApi.refreshAccessToken()
+        const accessToken = data.body.access_token
+        spotifyApi.setAccessToken(accessToken)
+    }, data.body.expires_in / 2 * 1000)
+
 })
 
 const PORT = 88
