@@ -86,6 +86,10 @@ app.get("/callback", async (req, res) => {
 
 })
 
+app.get("/token", async (req, res) => {
+    res.send(spotifyApi.getAccessToken())
+})
+
 const PORT = 88
 app.listen(PORT, () => {
     console.log(`Listening at http://localhost:${PORT}`)
