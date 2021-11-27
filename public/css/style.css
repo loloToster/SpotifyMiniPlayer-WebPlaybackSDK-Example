@@ -141,6 +141,8 @@ body {
 
 #menu-tabs .tab {
     fill: #b3b3b3;
+    width: 20px;
+    height: 20px;
 }
 
 #menu-tabs .tab:hover {
@@ -196,7 +198,7 @@ body {
     background-color: rgba(45, 45, 45, 0.9);
 }
 
-.controller-head-btn svg.main {
+#back-to-menu svg {
     margin: 5px;
 }
 
@@ -215,12 +217,14 @@ body {
 }
 
 #vol-storage {
-    width: 30px;
-    height: 30px;
-    margin: 5px;
+    width: 20px;
+    height: 20px;
+    margin: 10px;
 }
 
 #vol-storage svg {
+    width: 20px;
+    height: 20px;
     display: none;
 }
 
@@ -262,6 +266,8 @@ body {
 }
 
 .control-btn svg {
+    width: 20px;
+    height: 20px;
     fill: #b3b3b3;
 }
 
@@ -282,6 +288,8 @@ body {
 }
 
 .pause-play-circle svg {
+    width: 18px;
+    height: 18px;
     margin: 9px;
 }
 
