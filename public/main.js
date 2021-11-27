@@ -1,3 +1,31 @@
+function setCookie(name, value, expire = 365) {
+    const d = new Date()
+    d.setTime(d.getTime() + (expire * 24 * 60 * 60 * 1000))
+    let expires = "expires=" + d.toUTCString()
+    document.cookie = name + "=" + value + ";" + expires + ";path=/"
+}
+
+function getCookie(name) {
+    name = name + "="
+    let decodedCookie = decodeURIComponent(document.cookie)
+    let ca = decodedCookie.split(';')
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i]
+        while (c.charAt(0) == ' ')
+            c = c.substring(1)
+        if (c.indexOf(name) == 0)
+            return c.substring(name.length, c.length)
+    }
+    return ""
+}
+
+function zeroFill(number, width = 2) {
+    width -= number.toString().length
+    if (width > 0)
+        return new Array(width + (/\./.test(number) ? 2 : 1)).join("0") + number
+    return number + ""
+}
+
 let menuElement = document.getElementById("menu")
 let controllerElement = document.getElementById("controller")
 
@@ -99,6 +127,9 @@ window.onSpotifyWebPlaybackSDKReady = () => {
         }
     }
 
+    if (!getCookie("volume"))
+        setCookie("volume", "50")
+
     const player = new Spotify.Player({
         name: "Mini Player",
         getOAuthToken: async cb => {
@@ -106,7 +137,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
             let token = await res.text()
             cb(token)
         },
-        volume: 0.5
+        volume: parseFloat(getCookie("volume")) / 100
     })
 
     { // error handling
@@ -126,6 +157,41 @@ window.onSpotifyWebPlaybackSDKReady = () => {
             console.log("Failed to validate Spotify account", message)
         })
     }
+
+    let sound = document.getElementById("sound")
+    let soundInput = sound.getElementsByClassName("spotify-input")[0]
+    let volStorage = document.getElementById("vol-storage")
+
+    function setSoundSVG(percentage) {
+        let currentSvg = sound.querySelector("svg")
+        volStorage.appendChild(currentSvg)
+        let which = 3
+        if (percentage < 1) {
+            which = 0
+        } else if (percentage < 33) {
+            which = 1
+        } else if (percentage < 66) {
+            which = 2
+        } else {
+            which = 3
+        }
+        volStorage.appendChild(document.getElementById("vol-" + which))
+    }
+
+    sound.addEventListener("mouseenter", async () => {
+        let volume = await player.getVolume()
+        soundInput.value = volume * 100
+        soundInput.style.setProperty("--percentage", soundInput.value)
+        setSoundSVG(soundInput.value)
+    })
+
+    soundInput.addEventListener("input", () => {
+        let volume = soundInput.value
+        soundInput.style.setProperty("--percentage", volume)
+        player.setVolume(volume / 100)
+        setCookie("volume", volume)
+        setSoundSVG(volume)
+    })
 
     async function updateUserInfo() {
         let me = await player.getMe()
@@ -227,7 +293,58 @@ window.onSpotifyWebPlaybackSDKReady = () => {
                 break
         }
 
+        updateDuration(state.position, state.duration, state.paused)
     })
+
+    let durationInput = document.querySelector(".duration .spotify-input")
+    let durationLeft = document.querySelector("#l-dur")
+    let durationRight = document.querySelector("#r-dur")
+
+    let inputingDuration = false
+    durationInput.addEventListener("mousedown", () => inputingDuration = true)
+
+    durationInput.addEventListener("input", () => {
+        drawDuration(durationInput.value * 1000, durationInput.max * 1000)
+    })
+
+    durationInput.addEventListener("mouseup", () => {
+        inputingDuration = false
+        let ms = durationInput.value * 1000
+        player.seek(ms)
+    })
+
+    let durationTimeout
+    function updateDuration(position, duration, paused) {
+        clearTimeout(durationTimeout)
+        if (paused) {
+            drawDuration(position, duration)
+            return
+        }
+        if (!inputingDuration)
+            drawDuration(position, duration)
+        position += 1000
+        durationTimeout = setTimeout(updateDuration, 1000, position, duration, paused)
+    }
+
+    function drawDuration(position, duration) {
+        if (position > duration) position = 0
+
+        position = Math.floor(position / 1000)
+        duration = Math.floor(duration / 1000)
+
+        durationInput.value = position
+        durationInput.max = duration
+
+        durationInput.style.setProperty("--percentage", (position * 100) / duration)
+
+        let minutes = Math.floor(position / 60)
+        let seconds = position % 60
+        durationLeft.innerText = `${minutes}:${zeroFill(seconds)}`
+
+        minutes = Math.floor(duration / 60)
+        seconds = duration % 60
+        durationRight.innerText = `${minutes}:${zeroFill(seconds)}`
+    }
 
     player.connect()
 }

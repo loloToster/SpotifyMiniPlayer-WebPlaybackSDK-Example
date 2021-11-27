@@ -138,11 +138,12 @@ body {
 
 .spotify-input {
     --color: #b3b3b3;
+    --percentage: 50;
     -webkit-appearance: none;
     height: 3px;
     outline: none;
     border-radius: 100px;
-    background: linear-gradient(to right, var(--color) 0%, var(--color) 50%, #535353 50%, #535353 100%);
+    background: linear-gradient(to right, var(--color) 0%, var(--color) calc(var(--percentage) * 1%), #535353 calc(var(--percentage) * 1%), #535353 100%);
 }
 
 .spotify-input:hover {
@@ -174,7 +175,7 @@ body {
     background-color: rgba(45, 45, 45, 0.9);
 }
 
-.controller-head-btn>svg {
+.controller-head-btn svg.main {
     margin: 5px;
 }
 
@@ -192,17 +193,42 @@ body {
     display: block;
 }
 
+#vol-storage {
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+}
+
+#vol-storage svg {
+    display: none;
+}
+
+#vol-storage svg:last-child {
+    display: unset;
+}
+
+
 .title-artist {
     margin: 5px 16px;
 }
 
 #title {
     font-size: 30px;
+    max-width: 260px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #artist {
     font-size: 15px;
     color: #b3b3b3;
+    max-width: 260px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .control-btns {
