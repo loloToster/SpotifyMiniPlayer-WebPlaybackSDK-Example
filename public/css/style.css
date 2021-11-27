@@ -105,8 +105,6 @@ body {
     background: transparent;
 }
 
-/* Handle */
-
 ::-webkit-scrollbar-thumb {
     background: #202020;
 }
@@ -126,4 +124,124 @@ body {
 
 #menu-tabs .tab:hover {
     fill: #d3d3d3;
+}
+
+#controller {
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to top, rgba(45, 45, 45, 0.9), rgba(45, 45, 45, 0.9) 30%, rgba(0, 0, 0, 0) 60%), url("/images/default-pl.png");
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+}
+
+.spotify-input {
+    --color: #b3b3b3;
+    -webkit-appearance: none;
+    height: 3px;
+    outline: none;
+    border-radius: 100px;
+    background: linear-gradient(to right, var(--color) 0%, var(--color) 50%, #535353 50%, #535353 100%);
+}
+
+.spotify-input:hover {
+    --color: #1db954;
+}
+
+.spotify-input::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.spotify-input:hover::-webkit-slider-thumb {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: white;
+}
+
+.controller-head {
+    margin: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.controller-head-btn {
+    min-width: 40px;
+    height: 40px;
+    border-radius: 100px;
+    background-color: rgba(45, 45, 45, 0.9);
+}
+
+.controller-head-btn>svg {
+    margin: 5px;
+}
+
+#sound {
+    display: flex;
+    align-items: center;
+}
+
+#sound .spotify-input {
+    margin: 10px;
+    display: none;
+}
+
+#sound:hover .spotify-input {
+    display: block;
+}
+
+.title-artist {
+    margin: 5px 16px;
+}
+
+#title {
+    font-size: 30px;
+}
+
+#artist {
+    font-size: 15px;
+    color: #b3b3b3;
+}
+
+.control-btns {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.control-btn {
+    margin: 10px 8px;
+}
+
+.control-btn svg {
+    fill: #b3b3b3;
+}
+
+.pause-play-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: white;
+    margin: 0 8px;
+}
+
+.pause-play-circle svg {
+    margin: 9px;
+}
+
+.duration {
+    display: flex;
+    align-items: center;
+    margin: 5px 16px 16px 16px;
+}
+
+.dur-num {
+    font-size: 11px;
+    font-weight: initial;
+}
+
+.duration input {
+    flex-grow: 1;
+    margin: 0 5px;
 }

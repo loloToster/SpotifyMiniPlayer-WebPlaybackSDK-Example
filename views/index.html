@@ -13,7 +13,7 @@
 
 <body>
     <div id="mini-player">
-        <div id="menu">
+        <div id="menu" style="display: none;">
             <div id="menu-head">
                 <a class="mini-logo" href="https://open.spotify.com/" target="_blank">
                     <img src="/images/mini-logo.png"></img>
@@ -44,8 +44,66 @@
                 </svg>
             </div>
         </div>
-        <div id="controller"></div>
-    </div>
+        <div id="controller">
+            <div class="controller-head">
+                <div id="back-to-menu" class="controller-head-btn">
+                    <svg focusable="false" height="30" width="30" viewBox="0 0 24 24">
+                        <polyline points="16 4 7 12 16 20" fill="none" stroke="#b3b3b3"></polyline>
+                    </svg>
+                </div>
+                <div id="sound" class="controller-head-btn">
+                    <input type="range" class="spotify-input" min="0" max="100" value="50">
+                    <svg height="30" width="30" viewBox="0 0 16 16" fill="#b3b3b3">
+                        <path
+                            d="M10.04 5.984l.658-.77q.548.548.858 1.278.31.73.31 1.54 0 .54-.144 1.055-.143.516-.4.957-.259.44-.624.805l-.658-.77q.825-.865.825-2.047 0-1.183-.825-2.048zM0 11.032v-6h2.802l5.198-3v12l-5.198-3H0zm7 1.27v-8.54l-3.929 2.27H1v4h2.071L7 12.302z">
+                        </path>
+                    </svg>
+                </div>
+            </div>
+            <div style="flex-grow: 1;"></div>
+            <div class="title-artist">
+                <div id="title">Title</div>
+                <div id="artist">Artists</div>
+            </div>
+            <div class="control-btns">
+                <div id="shuffle" class="control-btn">
+                    <svg height="20" width="20" viewBox="0 0 16 16">
+                        <path
+                            d="M4.5 6.8l.7-.8C4.1 4.7 2.5 4 .9 4v1c1.3 0 2.6.6 3.5 1.6l.1.2zm7.5 4.7c-1.2 0-2.3-.5-3.2-1.3l-.6.8c1 1 2.4 1.5 3.8 1.5V14l3.5-2-3.5-2v1.5zm0-6V7l3.5-2L12 3v1.5c-1.6 0-3.2.7-4.2 2l-3.4 3.9c-.9 1-2.2 1.6-3.5 1.6v1c1.6 0 3.2-.7 4.2-2l3.4-3.9c.9-1 2.2-1.6 3.5-1.6z">
+                        </path>
+                    </svg>
+                </div>
+                <div id="prev" class="control-btn">
+                    <svg height="20" width="20" viewBox="0 0 16 16">
+                        <path d="M13 2.5L5 7.119V3H3v10h2V8.881l8 4.619z"></path>
+                    </svg>
+                </div>
+                <div id="pause-play">
+                    <div class="pause-play-circle">
+                        <svg height="18" width="18" viewBox="0 0 16 16">
+                            <path d="M4.018 14L14.41 8 4.018 2z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div id="next" class="control-btn">
+                    <svg height="20" width="20" viewBox="0 0 16 16">
+                        <path d="M11 3v4.119L3 2.5v11l8-4.619V13h2V3z"></path>
+                    </svg>
+                </div>
+                <div id="loop" class="control-btn">
+                    <svg height="20" width="20" viewBox="0 0 16 16">
+                        <path
+                            d="M5.5 5H10v1.5l3.5-2-3.5-2V4H5.5C3 4 1 6 1 8.5c0 .6.1 1.2.4 1.8l.9-.5C2.1 9.4 2 9 2 8.5 2 6.6 3.6 5 5.5 5zm9.1 1.7l-.9.5c.2.4.3.8.3 1.3 0 1.9-1.6 3.5-3.5 3.5H6v-1.5l-3.5 2 3.5 2V13h4.5C13 13 15 11 15 8.5c0-.6-.1-1.2-.4-1.8z">
+                        </path>
+                    </svg>
+                </div>
+            </div>
+            <div class="duration">
+                <div id="l-dur" class="dur-num">00:00</div>
+                <input type="range" class="spotify-input">
+                <div id="r-dur" class="dur-num">00:00</div>
+            </div>
+        </div>
 </body>
 
 </html>
