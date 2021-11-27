@@ -13,12 +13,17 @@
 
 <body>
     <div id="mini-player">
-        <div id="menu" style="display: none;">
+        <div id="menu">
             <div id="menu-head">
                 <a class="mini-logo" href="https://open.spotify.com/" target="_blank">
                     <img src="/images/mini-logo.png"></img>
                 </a>
-                <div id="nickname">Nickname</div>
+                <div id="nickname">
+                    <div>
+                        <a href="/logout" class="logout">logout</a>
+                        <span>Nickname</span>
+                    </div>
+                </div>
                 <img id="profile-pic" src="https://dummyimage.com/400x400"></img>
             </div>
             <div id="playlists">
@@ -44,7 +49,7 @@
                 </svg>
             </div>
         </div>
-        <div id="controller">
+        <div id="controller" style="display: none;">
             <div class="controller-head">
                 <div id="back-to-menu" class="controller-head-btn toggleBtn">
                     <svg class="main" height="30" width="30" viewBox="0 0 24 24">

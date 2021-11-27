@@ -39,7 +39,7 @@ express.response.renderHTML = function (file) {
     this.sendFile(file, { root: __dirname })
 }
 
-async function loggedIn() {
+async function loggedIn() { // todo: remove try / catch
     try {
         await spotifyApi.getMe()
     } catch {
@@ -59,6 +59,7 @@ app.get("/login", (req, res) => {
 app.get("/login/redirect", (req, res) => {
     res.redirect(spotifyApi.createAuthorizeURL(scopes, "some status"))
 })
+
 
 app.get("/callback", async (req, res) => {
     const error = req.query.error
@@ -84,6 +85,12 @@ app.get("/callback", async (req, res) => {
         spotifyApi.setAccessToken(accessToken)
     }, data.body.expires_in / 2 * 1000)
 
+})
+
+app.get("/logout", (req, res) => {
+    spotifyApi.resetAccessToken()
+    spotifyApi.resetRefreshToken()
+    res.redirect("/login")
 })
 
 app.get("/token", async (req, res) => {

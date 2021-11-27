@@ -8,10 +8,10 @@ function setCookie(name, value, expire = 365) {
 function getCookie(name) {
     name = name + "="
     let decodedCookie = decodeURIComponent(document.cookie)
-    let ca = decodedCookie.split(';')
+    let ca = decodedCookie.split(";")
     for (let i = 0; i < ca.length; i++) {
         let c = ca[i]
-        while (c.charAt(0) == ' ')
+        while (c.charAt(0) == " ")
             c = c.substring(1)
         if (c.indexOf(name) == 0)
             return c.substring(name.length, c.length)
@@ -195,7 +195,8 @@ window.onSpotifyWebPlaybackSDKReady = () => {
 
     async function updateUserInfo() {
         let me = await player.getMe()
-        document.getElementById("nickname").innerText = me.display_name
+        let nickDiv = document.getElementById("nickname")
+        nickDiv.innerHTML = nickDiv.innerHTML.replace("Nickname", me.display_name)
         document.getElementById("profile-pic").src = me.images[0].url
 
         let likedSongs = document.getElementsByClassName("playlist")[0]

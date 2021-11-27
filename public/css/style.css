@@ -54,6 +54,27 @@ body {
     font-size: 18px;
 }
 
+#nickname>div {
+    float: right;
+    position: relative;
+}
+
+#nickname>div:hover span {
+    opacity: 0;
+}
+
+.logout {
+    position: absolute;
+    right: 0;
+    color: crimson;
+    display: none;
+}
+
+#nickname>div:hover .logout {
+    display: block;
+    z-index: 1;
+}
+
 #profile-pic {
     height: 100%;
     border-radius: 50%;
@@ -206,7 +227,6 @@ body {
 #vol-storage svg:last-child {
     display: unset;
 }
-
 
 .title-artist {
     margin: 5px 16px;
