@@ -76,6 +76,27 @@ window.onSpotifyWebPlaybackSDKReady = () => {
                 })
             })
         }
+        Spotify.Player.prototype.toggleShuffle = async function () {
+            let state = await this.getCurrentState()
+            state = !state.shuffle
+            this._options.getOAuthToken(access_token => {
+                fetch("https://api.spotify.com/v1/me/player/shuffle?state=" + state, {
+                    method: "PUT",
+                    headers: this.defaultHeaders(access_token)
+                })
+            })
+        }
+        Spotify.Player.prototype.toggleRepeat = async function () {
+            const REPEAT_MODES = ["off", "context", "track"]
+            let state = await this.getCurrentState()
+            state = (state.repeat_mode + 1) % 3
+            this._options.getOAuthToken(access_token => {
+                fetch(`https://api.spotify.com/v1/me/player/repeat?state=${REPEAT_MODES[state]}`, {
+                    method: "PUT",
+                    headers: this.defaultHeaders(access_token)
+                })
+            })
+        }
     }
 
     const player = new Spotify.Player({
@@ -131,12 +152,15 @@ window.onSpotifyWebPlaybackSDKReady = () => {
         })
     }
 
-    let pauseButton = document.getElementById("pause-play")
+    let shuffleBtn = document.getElementById("shuffle")
+    let pauseBtn = document.getElementById("pause-play")
+    let repeatBtn = document.getElementById("loop")
 
-    pauseButton.addEventListener("click", () => player.togglePlay())
-
+    shuffleBtn.addEventListener("click", () => player.toggleShuffle())
     document.getElementById("prev").addEventListener("click", () => player.previousTrack())
+    pauseBtn.addEventListener("click", () => player.togglePlay())
     document.getElementById("next").addEventListener("click", () => player.nextTrack())
+    repeatBtn.addEventListener("click", () => player.toggleRepeat())
 
     player.addListener("ready", async ({ device_id }) => {
         await updateUserInfo()
@@ -171,8 +195,37 @@ window.onSpotifyWebPlaybackSDKReady = () => {
 
         // setting buttons state
         state.paused ?
-            pauseButton.classList.add("paused") :
-            pauseButton.classList.remove("paused")
+            pauseBtn.classList.add("paused") :
+            pauseBtn.classList.remove("paused")
+
+        state.shuffle ?
+            shuffleBtn.classList.add("active") :
+            shuffleBtn.classList.remove("active")
+
+        let loop0 = document.querySelector("#loop .loop0")
+        let loop1 = document.querySelector("#loop .loop1")
+        switch (state.repeat_mode) {
+            case 0:
+                repeatBtn.classList.remove("active")
+                loop0.style.display = "unset"
+                loop1.style.display = "none"
+                break
+
+            case 1:
+                repeatBtn.classList.add("active")
+                loop0.style.display = "unset"
+                loop1.style.display = "none"
+                break
+
+            case 2:
+                repeatBtn.classList.add("active")
+                loop0.style.display = "none"
+                loop1.style.display = "unset"
+                break
+
+            default:
+                break
+        }
 
     })
 
