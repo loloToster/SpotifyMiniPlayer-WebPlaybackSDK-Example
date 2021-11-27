@@ -252,17 +252,19 @@ window.onSpotifyWebPlaybackSDKReady = () => {
         if (!state) return
 
         // setting album cover
-        document
-            .getElementById("controller")
-            .style
-            .setProperty("--image",
+        document.getElementById("controller")
+            .style.setProperty("--image",
                 `url("${findBestImage(state.track_window.current_track.album.images)}")`)
 
         // setting title and artists
-        document.getElementById("title").innerText = state.track_window.current_track.name
-        document.getElementById("artist").innerText = state.track_window.current_track.artists
+        const title = state.track_window.current_track.name
+        const artists = state.track_window.current_track.artists
             .reduce((acc, cur) => acc + cur.name + ", ", "")
             .slice(0, -2)
+
+        document.querySelector("title").innerText = title + " · " + artists
+        document.getElementById("title").innerText = title
+        document.getElementById("artist").innerText = artists
 
         // setting buttons state
         state.paused ?

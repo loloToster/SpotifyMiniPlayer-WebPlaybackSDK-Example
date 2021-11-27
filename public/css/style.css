@@ -98,6 +98,8 @@ blockade {
     overflow-y: scroll;
     padding: 10px;
     padding-right: 7px;
+    padding-top: 0px;
+    padding: 0px 7px 0 10px;
 }
 
 .playlist {
@@ -244,12 +246,16 @@ blockade {
     display: unset;
 }
 
+.middlelify {
+    transform: translateX(2px);
+}
+
 .title-artist {
     margin: 5px 16px;
 }
 
 #title {
-    font-size: 30px;
+    font-size: 25px;
     max-width: 260px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
