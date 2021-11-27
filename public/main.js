@@ -127,8 +127,11 @@ window.onSpotifyWebPlaybackSDKReady = () => {
         }
     }
 
-    if (!getCookie("volume"))
+    let c = getCookie("volume")
+    if (!c) {
         setCookie("volume", "50")
+        c = "50"
+    }
 
     const player = new Spotify.Player({
         name: "Mini Player",
@@ -137,7 +140,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
             let token = await res.text()
             cb(token)
         },
-        volume: parseFloat(getCookie("volume")) / 100
+        volume: parseFloat(c) / 100
     })
 
     { // error handling
@@ -232,6 +235,8 @@ window.onSpotifyWebPlaybackSDKReady = () => {
     player.addListener("ready", async ({ device_id }) => {
         await updateUserInfo()
         await player.transferPlayback(device_id)
+        setSoundSVG(c)
+        document.querySelector("blockade").remove()
     })
 
     function findBestImage(images) {
@@ -239,7 +244,6 @@ window.onSpotifyWebPlaybackSDKReady = () => {
         images.forEach(img => {
             if (lastImg.height < img.height)
                 lastImg = img
-
         })
         return lastImg.url
     }
