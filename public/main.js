@@ -259,8 +259,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
         // setting title and artists
         const title = state.track_window.current_track.name
         const artists = state.track_window.current_track.artists
-            .reduce((acc, cur) => acc + cur.name + ", ", "")
-            .slice(0, -2)
+            .map(e => e.name).join(", ")
 
         document.querySelector("title").innerText = title + " · " + artists
         document.getElementById("title").innerText = title
